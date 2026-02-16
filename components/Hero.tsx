@@ -3,11 +3,10 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 interface HeroProps {
-  onCtaQuiz: () => void;
-  onCtaContact: () => void;
+  onCtaAction: () => void;
 }
 
-const Hero: React.FC<HeroProps> = ({ onCtaQuiz, onCtaContact }) => {
+const Hero: React.FC<HeroProps> = ({ onCtaAction }) => {
   return (
     <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
       <div className="absolute top-1/4 -right-20 w-[500px] h-[500px] bg-accent/5 rounded-full blur-3xl pointer-events-none" />
@@ -41,16 +40,22 @@ const Hero: React.FC<HeroProps> = ({ onCtaQuiz, onCtaContact }) => {
             className="flex flex-col sm:flex-row gap-6"
           >
             <button 
-              onClick={onCtaQuiz}
-              className="bg-accent text-pine-dark px-10 py-5 rounded-sm font-bold text-lg hover:brightness-110 transition-all shadow-xl shadow-accent/20"
+              onClick={onCtaAction}
+              className="bg-accent text-pine-dark px-10 py-5 rounded-sm font-bold text-lg hover:brightness-110 transition-all shadow-xl shadow-accent/20 flex items-center justify-center space-x-3"
             >
-              Start dein Brand-Check (60s)
+              <span>Projekt anfragen</span>
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
             </button>
             <button 
-              onClick={onCtaContact}
+              onClick={() => {
+                const portfolio = document.getElementById('portfolio');
+                portfolio?.scrollIntoView({ behavior: 'smooth' });
+              }}
               className="flex items-center justify-center px-10 py-5 border border-white/10 rounded-sm font-medium hover:bg-white/5 transition-all text-lg"
             >
-              Kontakt aufnehmen
+              Portfolio ansehen
             </button>
           </motion.div>
         </div>
@@ -62,7 +67,7 @@ const Hero: React.FC<HeroProps> = ({ onCtaQuiz, onCtaContact }) => {
         transition={{ delay: 0.6, duration: 1.2 }}
         className="absolute bottom-10 right-10 hidden lg:block"
       >
-        <div className="flex flex-col items-end opacity-20 pointer-events-none">
+        <div className="flex flex-col items-end opacity-10 pointer-events-none">
           <span className="text-9xl font-serif font-bold italic">Impact</span>
           <span className="text-9xl font-serif font-bold">First.</span>
         </div>

@@ -1,23 +1,19 @@
 
-import React, { useState, useEffect } from 'react';
-import Header from './components/Header';
-import Hero from './components/Hero';
-import Problem from './components/Problem';
-import Quiz from './components/Quiz';
-import Portfolio from './components/Portfolio';
-import About from './components/About';
-import Footer from './components/Footer';
-import CaseDetail from './components/CaseDetail';
-import Contact from './components/Contact';
+import React, { useState } from 'react';
+import Header from './components/Header.tsx';
+import Hero from './components/Hero.tsx';
+import Problem from './components/Problem.tsx';
+import Portfolio from './components/Portfolio.tsx';
+import About from './components/About.tsx';
+import Footer from './components/Footer.tsx';
+import CaseDetail from './components/CaseDetail.tsx';
+import Contact from './components/Contact.tsx';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export type Page = 'home' | 'case-ergo' | 'case-wine' | 'case-conifere' | 'contact';
 
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<Page>('home');
-  const [showQuiz, setShowQuiz] = useState(false);
-
-  const toggleQuiz = () => setShowQuiz(!showQuiz);
 
   const navigateTo = (page: Page) => {
     setCurrentPage(page);
@@ -32,7 +28,7 @@ const App: React.FC = () => {
           title="Branding einer Ergotherapie" 
           category="Health & Empathy"
           description="Entwicklung einer visuellen Identität, die Geborgenheit, Vertrauen und professionelle Heilung ausstrahlt. Weiche, organische Formen treffen auf eine beruhigende Farbpalette."
-          images={['https://picsum.photos/1200/800?random=10', 'https://picsum.photos/1200/800?random=11']}
+          images={['https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=1200', 'https://images.unsplash.com/photo-1581056771107-24ca5f033842?q=80&w=1200']}
           onBack={() => navigateTo('home')}
         />;
       case 'case-wine':
@@ -41,7 +37,7 @@ const App: React.FC = () => {
           title="Exclusive Wine Club" 
           category="Luxury & Lifestyle"
           description="Premium Branding für einen exklusiven Wein-Zirkel. Das Design verbindet Tradition mit moderner Exzellenz – minimalistisch, edel und zeitlos."
-          images={['https://picsum.photos/1200/800?random=12', 'https://picsum.photos/1200/800?random=13']}
+          images={['https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=1200', 'https://images.unsplash.com/photo-1506377247377-2a5b3b0ca7df?q=80&w=1200']}
           onBack={() => navigateTo('home')}
         />;
       case 'case-conifere':
@@ -50,7 +46,7 @@ const App: React.FC = () => {
           title="Innenausstatter Conifere" 
           category="Interior Design"
           description="Markenentwicklung für High-End-Innenausbau. Die DNA des Handwerks wird durch eine strukturierte, natürliche Ästhetik sichtbar gemacht."
-          images={['https://picsum.photos/1200/800?random=14', 'https://picsum.photos/1200/800?random=15']}
+          images={['https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=1200', 'https://images.unsplash.com/photo-1616489953149-805c87900898?q=80&w=1200']}
           onBack={() => navigateTo('home')}
         />;
       case 'contact':
@@ -58,7 +54,7 @@ const App: React.FC = () => {
       default:
         return (
           <>
-            <Hero onCtaQuiz={toggleQuiz} onCtaContact={() => navigateTo('contact')} />
+            <Hero onCtaAction={() => navigateTo('contact')} />
             <Problem />
             <Portfolio onSelectCase={(slug) => navigateTo(slug as Page)} />
             <About />
@@ -70,7 +66,7 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-pine-dark text-slate-200 overflow-x-hidden">
       <Header 
-        onCtaClick={toggleQuiz} 
+        onCtaClick={() => navigateTo('contact')} 
         onNavigate={navigateTo} 
         currentPage={currentPage}
       />
@@ -87,23 +83,27 @@ const App: React.FC = () => {
             {renderContent()}
           </motion.div>
         </AnimatePresence>
-        
-        <div id="quiz-section">
-          <Quiz isOpen={showQuiz} onClose={() => setShowQuiz(false)} />
-        </div>
       </main>
 
       <Footer onNavigate={navigateTo} />
 
       {/* Floating CTA for Mobile */}
-      <motion.button
-        initial={{ opacity: 0, y: 100 }}
-        animate={{ opacity: 1, y: 0 }}
-        onClick={toggleQuiz}
-        className="fixed bottom-6 right-6 md:hidden bg-accent text-pine-dark font-semibold px-6 py-3 rounded-full shadow-2xl z-40 flex items-center space-x-2"
-      >
-        <span>Brand Check starten</span>
-      </motion.button>
+      <AnimatePresence>
+        {currentPage !== 'contact' && (
+          <motion.button
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 100 }}
+            onClick={() => navigateTo('contact')}
+            className="fixed bottom-6 right-6 md:hidden bg-accent text-pine-dark font-semibold px-6 py-4 rounded-full shadow-2xl z-40 flex items-center space-x-2"
+          >
+            <span>Projekt anfragen</span>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </motion.button>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
