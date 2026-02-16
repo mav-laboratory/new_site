@@ -30,6 +30,13 @@
         background-color: #5EB38E;
         color: #051411;
       }
+
+      /* Fix for blank screen issues in some environments */
+      #root {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
     </style>
   <script type="importmap">
 {
@@ -45,5 +52,7 @@
 </head>
   <body>
     <div id="root"></div>
+    <!-- Entry point script -->
+    <script type="module" src="./index.tsx"></script>
   </body>
 </html>
